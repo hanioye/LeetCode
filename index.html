@@ -14,24 +14,6 @@
 
 <body>
 <div id="app"></div>
-
-
-<link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
-<script src="//unpkg.com/docsify/lib/plugins/gitalk.min.js"></script>
-<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
-<script>
-    const gitalk = new Gitalk({
-        clientID: '57bb28c955eb8fbaf4d1', //上面生成的clientID
-        clientSecret: '21d50883f6691273fd3dcffdbb1d1929b35d905b',//上面生成的clientSecret
-        repo: 'LeetCode',//Github博客项目名
-        owner: 'hanioye',//github用户名
-        admin: ['hanioye'],//github用户名，可以添加多个
-        distractionFreeMode: false
-    })
-</script>
-
-
-
 <script>
     const sleep = ms => new Promise(r => setTimeout(r, ms));
 
@@ -77,6 +59,22 @@
 
     };
 </script>
+
+
+<link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+<script src="//unpkg.com/docsify/lib/plugins/gitalk.min.js"></script>
+<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script>
+    const gitalk = new Gitalk({
+        clientID: '57bb28c955eb8fbaf4d1', //上面生成的clientID
+        clientSecret: '21d50883f6691273fd3dcffdbb1d1929b35d905b',//上面生成的clientSecret
+        repo: 'LeetCode',//Github博客项目名
+        owner: 'hanioye',//github用户名
+        admin: ['hanioye'],//github用户名，可以添加多个
+        distractionFreeMode: false
+    })
+</script>
+
 <!-- docsify-themeable -->
 <script src="assets/js/main.js"></script>
 <!-- <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/plugins/ga.min.js"></script> -->
