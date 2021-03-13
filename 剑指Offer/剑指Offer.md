@@ -13,7 +13,7 @@
 
 [数组中重复的数字](https://www.nowcoder.com/practice/623a5ac0ea5b4e5f95552655361ae0a8?tpId=13&tqId=11203&tPage=1&rp=1&ru=/ta/coding-interviews&qru=/ta/coding-interviews/question-ranking)
 
-```cpp
+```c++
 class Solution {
 public:
     // Parameters:
