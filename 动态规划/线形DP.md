@@ -63,7 +63,7 @@ for(int i=1;i<=N;i++)
 
 **注意:重复利用一维数组可以节约内存空间，但使用不好也有可能留下bug，所以要格外小心。新手比较好的建议是先按照题意去写二维的，然后可以优化的话，在优化成一维的(滚动数组、重复一维数组)。**
 
-
+**LeetCode上个一些题是0/1背包的经典应用，在熟练理解0/1背包的原理后，这种很明显的0/1背包题就可以直接一维数组去写。**
 
 
 
@@ -100,11 +100,9 @@ class Solution {
 public:
     int dp[1111][1111];
     int findMaxForm(vector<string>& strs, int m, int n) {
-        
         int size_str = strs.size();
         memset(dp,0,sizeof(dp));
-
-
+      
         for(int i = 0;i<size_str;i++)
         {
             int v_0=0,v_1=0;
@@ -138,7 +136,6 @@ public:
                 dp[j] = dp[j] || dp[ j - nums[i] ];
 
         return dp[sum];
-
     }
 };
 ```
