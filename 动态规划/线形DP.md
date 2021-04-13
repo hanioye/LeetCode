@@ -15,7 +15,7 @@
  dp[ i, j ] 代表从前i个物品中选出总重量不超过j的物品时总价值的最大值。递推关系可以按照**是否取当前物品来划分**。
 
 ```c++
-dp[i][j] = max(dp[i-1][j],dp[i-1][j-v[i] ] );  //j>v[i]  max(不取当前物品i,取当前物品i)
+dp[i][j] = max(dp[i-1][j],dp[i-1][j-v[i] ] + w[i] );  //j>v[i]  max(不取当前物品i,取当前物品i)
 dp[i][j] = dp[i-1][j];//j<v[i],只能不取当前物品
 ```
 
@@ -53,24 +53,22 @@ for(int i=1;i<=N;i++)
 
 
 
-**2. 重复一维数组**: 再来观察下二维dp数组，如果将二维数组打印出来的话，会发现:**当前点(i,j)依赖左上的点(i-1,j-v[i])和上面的点(i-1,j)**，我习惯称为:左上依赖。这种依赖关系是可以将二维数组优化为倒叙一维数组去解决的:
+**2. 重复一维数组**: 再来观察下二维dp数组，如果将二维数组打印出来的话，会发现:**当前点(i,j)依赖左上的点(i-1,j-v[i])和上面的点(i-1,j)**，我习惯称为: ↘ ↓依赖。这种依赖关系是可以将二维数组优化为倒叙一维数组去解决的（因为↘依赖，要保证i维度左边的数据是上一层循环的数据）。
+
+![dp_01](../image/dp_01.jpg)
 
 ```c++
 vector<int> dp(M+1,0);//一维数组
 for(int i=1;i<=N;i++)
-        for (int j = M; j >= v[i]; j--)//倒叙
+        for (int j = M; j >= v[i]; j--)//倒序
         {
         		dp[j] = max(dp[j], dp[j - v[i]] + w[i]);
         }
 ```
 
-**注意:重复利用一维数组可以节约内存空间，但使用不好也有可能留下bug，所以要格外小心。新手比较好的建议是先按照题意去写二维的，然后可以优化的话，在优化成一维的(滚动数组、重复一维数组)。**
+**注意:重复利用一维数组可以节约内存空间，但使用不好也有可能留下bug，所以要格外小心。新手比较好的建议是先按照题意去写二维的，然后可以优化的话，在优化成一维的(滚动数组、重复一维数组)。另外，初学者可以把二维数组打印出来，看一下最优解的形成过程**
 
 **LeetCode上个一些题是0/1背包的经典应用，在熟练理解0/1背包的原理后，这种很明显的0/1背包题就可以直接一维数组去写。**
-
-
-
-
 
 
 
@@ -156,18 +154,80 @@ public:
 
 ### 完全背包
 
-
-
 > **完全背包模型** : 给定N个物品，其中第i个物品的体积为V~i~，价位为W~i~。有一容积为M的背包，要求选择一些物品放入背包，使得物品总体积不超过M的前提下，物品的价值和达到最大。**在这里，每种物品可以挑选任意多件。**
 
 相比0/1背包，这次同一类物品可以取任意件数了。
 
 ```c++
-dp[i][j] = max(dp[i - 1][j], dp[i][j - v[i]]);//j>v[i].  max(尚未取过i物品,从第i种物品选一个)
+dp[i][j] = max(dp[i - 1][j], dp[i][j - v[i]] + w[i]);//j>v[i].  max(尚未取过i物品,从第i种物品选一个)
 dp[i][j] = dp[i - 1][j];//j<v[i]	
 ```
 
 
+
+#### 完全背包代码实现
+
+完全背包的代码实现和0/1背包类似，区别在于：完全背包是 → ↓ 依赖。类似的我们可以优化掉dp数组的i这一维，但是，j 这一维要正序遍历（**因为依赖关系→需要先得出当前i维度左边的数据，所以要正序**）。
+
+![dp_02](../image/dp_02.jpg)
+
+```c++
+
+vector<int> dp(M + 11, 0);
+
+int solve() {
+    for (int i = 0; i < N; i++) {
+        for (int j = v[i]; j <= M; j++) {//正序
+            dp[j] = max(dp[j], dp[j - v[i]] + w[i]);
+        }
+    }
+    return dp[M];
+}
+```
+
+
+
+#### 完全背包练习题
+
+[518. 零钱兑换 II](https://leetcode-cn.com/problems/coin-change-2/)
+
+```c++
+//完全背包, 如果让输入所有路径呢?
+class Solution {
+public:
+    int change(int amount, vector<int> &coins) {
+        int n = coins.size();
+        vector<int> dp(amount + 11, 0);
+        dp[0] = 1;
+        for (int i = 0; i < n; ++i) {
+            for (int j = coins[i]; j <= amount; ++j)
+                dp[j] += dp[j - coins[i]];
+        }
+        return dp[amount];
+    }
+};
+```
+
+
+
+[322. 零钱兑换](https://leetcode-cn.com/problems/coin-change/)
+
+```c++
+class Solution {
+public:
+    int f[111111];
+    int coinChange(vector<int> &coins, int amount) {
+        memset(f, 0x3f, sizeof f);
+        f[0] = 0;
+        int n = coins.size();
+        for (int i = 1; i <= n; ++i)
+            for (int j = coins[i - 1]; j <= amount; ++j) {
+                f[j] = min(f[j], f[j - coins[i - 1]] + 1);
+            }
+        return f[amount] == 0x3f3f3f3f ? -1 : f[amount];
+    }
+};
+```
 
 
 
