@@ -1,5 +1,9 @@
 # 线形DP
 
+> 线性DP：即线性动态规划，是一个比较广义的概念，不局限于“线性时间复杂度”的一维动态规划。与数学种的“线性空间”类似，如果一个动态规划算法的“状态”包含多个维度，但在每个维度上都具有“线性”变化的阶段，那么该动态规划算法同样称为"线性DP"。本文就几个经典、简单的线性DP问题作出总结。
+
+
+
 ## 一、背包问题
 
 背包问题是线形DP中非常重要且典型的问题。
@@ -233,7 +237,90 @@ public:
 
 
 
-## TODO:
+
+
+## 二、最长上升子序列(LIS)
+
+> 最长上升子序列(Longest Increasing Subsequence): 有一个长度为n的数列a0,a1,...an-1。请求出这个序列中最长的上升子序列的长度。上升子序列指的是对于任意的i<j都满足ai < aj 的子序列。
+>
+> 例子：
+>
+> 输入：nums = [10,9,2,5,3,7,101,18]
+> 输出：4
+> 解释：最长递增子序列是 [2,3,7,101]，因此长度为 4 。
+
+### 实现原理
+
+[LeetCode 300. 最长递增子序列](https://leetcode-cn.com/problems/longest-increasing-subsequence/)
+
+```c++
+/*
+定义递推式 dp[i] : 以ai为结尾的最长上升子序列的长度
+以ai为结尾的上升子序列是:
+1.只包含ai的子序列
+2.在满足j<i && aj<ai 的以aj为结尾的上升子列末尾，加上ai后得到的子序列
+
+所以 dp[i] = max(1,dp[j] + 1) //j<i && aj < ai
+*/
+
+//实现代码 时间复杂度:O(n2)
+int lengthOfLIS(vector<int> &nums) {
+    int n = nums.size();
+    vector<int> dp(n + 1, 0);
+    int ans = -1;
+    for (int i = 0; i < n; i++) {
+        dp[i] = 1;
+        for (int j = 0; j < i; j++)
+            if (nums[j] < nums[i]) {
+                dp[i] = max(dp[i], dp[j] + 1);
+            }
+        ans = max(ans, dp[i]);
+    }
+    return ans;
+}
+
+```
+
+
+
+```c++
+
+/*
+更换一种递推关系式
+定义递推式 dp[i] : 长度为i+1的上升子序列中末尾元素的最小值(不存在就INF)
+dp数组初始化为INF。由前到后逐个考虑数列的元素，对于每个aj，如果i=0或者dp[i-1]<aj,就用dp[i] = min(dp[i],a[j])进行更新。最终找到除INF外的数组长度就是答案。
+
+如果用DP去完成同样也是O(n2)的时间复杂度。
+考虑到dp数组是单调递增的，每个元素ai最多需要一次更新，所以没必要逐个遍历，二分搜索即可，时间复杂度为O(n*logn)
+*/
+
+int lengthOfLIS(vector<int> &nums) {
+    int n = nums.size();
+    vector<int> dp(n + 1, INT_MAX);
+    for (auto x:nums) {
+        *lower_bound(dp.begin(), dp.end(), x) = x;//dp[j] = x;找到x在dp数组中的位置
+    }
+    return lower_bound(dp.begin(), dp.end(), INT_MAX) - dp.begin();//dp数组除INT_MAX外的长度即为答案.
+}
+```
+
+
+
+
+
+## 三、最长公共子序列(LCS)
+
+
+
+
+
+
+
+
+
+
+
+## 
 
 ## 区间DP
 
