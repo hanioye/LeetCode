@@ -398,9 +398,11 @@ F[i, j]表示从左上角出发，走到第i行，第j列，和最大是多少�
 
    **如前面背包问题的优化一样，这里的可以优化成重复一维数组，j那一维倒序即可。因为dp依赖左上和上，左上倒序需要倒序保证。**
 
+   [LeetCode 120. 三角形最小路径和](https://leetcode-cn.com/problems/triangle/)
+
  ```cpp
 /*
- * 数字三角形
+ * LeetCode-120 数字三角形
  * */
 class Solution {
 public:
@@ -420,3 +422,8 @@ public:
 
  ```
 
+
+
+
+
+## 五、线性DP LeetCode练习题
