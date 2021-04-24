@@ -389,16 +389,12 @@ public:
 F[i, j]表示从左上角出发，走到第i行，第j列，和最大是多少。
 
 1. F[i, j] = min(F[i-1, j-1],F[i-1,j]) + A[i, j] (j!=1,j!=i)
-
 2. F[i, j] = F[i-1, j-1]+ A[i, j]   (i==j)//每行最后一列
-
 3. F[i, j] = F[i-1,j]  +  A[i ,j] (j==1)  //第一列
 
-   
+**如前面背包问题的优化一样，这里的可以优化成重复一维数组，j那一维倒序即可。因为dp依赖左上和上，左上倒序需要倒序保证。**
 
-   **如前面背包问题的优化一样，这里的可以优化成重复一维数组，j那一维倒序即可。因为dp依赖左上和上，左上倒序需要倒序保证。**
-
-   [LeetCode 120. 三角形最小路径和](https://leetcode-cn.com/problems/triangle/)
+[LeetCode 120. 三角形最小路径和](https://leetcode-cn.com/problems/triangle/)
 
  ```cpp
 
