@@ -401,9 +401,11 @@ F[i, j]表示从左上角出发，走到第i行，第j列，和最大是多少�
    [LeetCode 120. 三角形最小路径和](https://leetcode-cn.com/problems/triangle/)
 
  ```cpp
+
 /*
  * LeetCode-120 数字三角形
  * */
+
 class Solution {
 public:
     int minimumTotal(vector <vector<int>> &triangle) {
